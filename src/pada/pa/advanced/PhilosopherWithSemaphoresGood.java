@@ -1,51 +1,44 @@
 package pada.pa.advanced;
 
-class State
-{
+class State {
     public static final int THINKING = 0;
     public static final int HUNGRY = 1;
     public static final int EATING = 2;
     private int[] state;
 
-    public State(int number)
-    {
+    public State(int number) {
         state = new int[number];
-        for(int i = 0; i < number; i++)
+        for (int i = 0; i < number; i++)
             state[i] = THINKING;
     }
 
-    public int leftNeighbor(int i)
-    {
-        if(i - 1 >= 0)
+    public int leftNeighbor(int i) {
+        if (i - 1 >= 0)
             return i - 1;
         else
             return state.length - 1;
     }
 
-    public int rightNeighbor(int i)
-    {
-        if(i + 1 < state.length)
+    public int rightNeighbor(int i) {
+        if (i + 1 < state.length)
             return i + 1;
         else
             return 0;
     }
 
-    public void set(int index, int value)
-    {
+    public void set(int index, int value) {
         state[index] = value;
     }
 
-    public boolean isEatingPossible(int i)
-    {
-        if(state[i] == HUNGRY && state[leftNeighbor(i)] != EATING
-           && state[rightNeighbor(i)] != EATING)
+    public boolean isEatingPossible(int i) {
+        if (state[i] == HUNGRY && state[leftNeighbor(i)] != EATING
+                && state[rightNeighbor(i)] != EATING)
             return true;
         return false;
     }
 }
 
-public class PhilosopherWithSemaphoresGood implements Runnable
-{
+public class PhilosopherWithSemaphoresGood implements Runnable {
     private Semaphore mutex;
     private Semaphore[] eatingAllowed;
     private State state;
@@ -53,8 +46,7 @@ public class PhilosopherWithSemaphoresGood implements Runnable
 
     public PhilosopherWithSemaphoresGood(Semaphore mutex,
                                          Semaphore[] eatingAllowed,
-                                         State state, int number)
-    {
+                                         State state, int number) {
         this.mutex = mutex;
         this.eatingAllowed = eatingAllowed;
         this.state = state;
@@ -63,16 +55,13 @@ public class PhilosopherWithSemaphoresGood implements Runnable
         this.rightNeighbor = state.rightNeighbor(number);
     }
 
-    public void run()
-    {
-        while(true)
-        {
+    public void run() {
+        while (true) {
             think(number);
-            /* zum Essen anmelden; prüfen, ob E. möglich */
+            /* zum Essen anmelden; prï¿½fen, ob E. mï¿½glich */
             mutex.p();
             state.set(number, State.HUNGRY);
-            if(state.isEatingPossible(number))
-            {
+            if (state.isEatingPossible(number)) {
                 state.set(number, State.EATING);
                 eatingAllowed[number].v();
             }
@@ -80,16 +69,14 @@ public class PhilosopherWithSemaphoresGood implements Runnable
             /* auf Essenserlaubnis warten und essen */
             eatingAllowed[number].p();
             eat(number);
-            /* vom Essen abmelden; für Nachbarn prüfen */
+            /* vom Essen abmelden; fï¿½r Nachbarn prï¿½fen */
             mutex.p();
             state.set(number, State.THINKING);
-            if(state.isEatingPossible(leftNeighbor))
-            {
+            if (state.isEatingPossible(leftNeighbor)) {
                 state.set(leftNeighbor, State.EATING);
                 eatingAllowed[leftNeighbor].v();
             }
-            if(state.isEatingPossible(rightNeighbor))
-            {
+            if (state.isEatingPossible(rightNeighbor)) {
                 state.set(rightNeighbor, State.EATING);
                 eatingAllowed[rightNeighbor].v();
             }
@@ -97,42 +84,34 @@ public class PhilosopherWithSemaphoresGood implements Runnable
         }
     }
 
-    private void think(int number)
-    {
+    private void think(int number) {
         System.out.println("Philosoph " + number + " denkt.");
-        try
-        {
+        try {
             Thread.sleep((int) (Math.random() * 20000));
-        }
-        catch(InterruptedException e)
-        {
+        } catch (InterruptedException e) {
         }
     }
 
-    private void eat(int number)
-    {
-        System.out.println("Philosoph " + number + " fängt zu essen an.");
-        try
-        {
+    private void eat(int number) {
+        System.out.println("Philosoph " + number + " fï¿½ngt zu essen an.");
+        try {
             Thread.sleep((int) (Math.random() * 20000));
+        } catch (InterruptedException e) {
         }
-        catch(InterruptedException e)
-        {
-        }
-        System.out.println("Philosoph " + number + " hört auf zu essen.");
+        System.out.println("Philosoph " + number + " hï¿½rt auf zu essen.");
     }
+
     private static final int NUMBER = 5;
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Semaphore mutex = new Semaphore(1);
         Semaphore[] eatingAllowed;
         eatingAllowed = new Semaphore[NUMBER];
-        for(int i = 0; i < NUMBER; i++)
+        for (int i = 0; i < NUMBER; i++)
             eatingAllowed[i] = new Semaphore(0);
         State s = new State(NUMBER);
-        for(int i = 0; i < NUMBER; i++)
+        for (int i = 0; i < NUMBER; i++)
             new Thread(new PhilosopherWithSemaphoresGood(mutex, eatingAllowed,
-                                                         s, i)).start();
+                    s, i)).start();
     }
 }

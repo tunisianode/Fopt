@@ -3,8 +3,8 @@ package pada.da.rmi.counter;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface Counter extends Remote
-{
+public interface Counter extends Remote {
     public int reset() throws RemoteException;
+
     public int increment() throws RemoteException;
 }

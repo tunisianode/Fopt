@@ -2,22 +2,18 @@ package pada.da.sockets.udp;
 
 import java.net.InetAddress;
 
-public class Client
-{
+public class Client {
     private static final int TIMEOUT = 10000; // 10 seconds
 
-    public static void main(String args[])
-    {
-        if(args.length != 2)
-        {
+    public static void main(String args[]) {
+        if (args.length != 2) {
             System.out.println("Notwendige Kommandozeilenargumente: "
-                               + "<Name des Server-Rechners> <Anzahl>");
+                    + "<Name des Server-Rechners> <Anzahl>");
             return;
         }
 
         // create datagram socket
-        try(UDPSocket udpSocket = new UDPSocket())
-        {
+        try (UDPSocket udpSocket = new UDPSocket()) {
             udpSocket.setTimeout(TIMEOUT);
             // get inet addr of server
             InetAddress serverAddr = InetAddress.getByName(args[0]);
@@ -26,13 +22,10 @@ public class Client
             udpSocket.send("reset", serverAddr, 1250);
             String reply = null;
             // receive reply
-            try
-            {
+            try {
                 reply = udpSocket.receive(20);
                 System.out.println("Z�hler: " + reply);
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 System.out.println(e);
             }
             // get count, initialize start time
@@ -40,15 +33,11 @@ public class Client
             int count = new Integer(args[1]).intValue();
             long startTime = System.currentTimeMillis();
             // perform increment "count" number of times
-            for(int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 udpSocket.send("increment", serverAddr, 1249);
-                try
-                {
+                try {
                     reply = udpSocket.receive(20);
-                }
-                catch(Exception e)
-                {
+                } catch (Exception e) {
                     System.out.println(e);
                 }
             }
@@ -56,15 +45,12 @@ public class Client
             long stopTime = System.currentTimeMillis();
             long duration = stopTime - startTime;
             System.out.println("Gesamtzeit = " + duration + " msecs");
-            if(count > 0)
-            {
+            if (count > 0) {
                 System.out.println("Durchschnittszeit = "
-                                   + ((duration) / (float) count) + " msecs");
+                        + ((duration) / (float) count) + " msecs");
             }
             System.out.println("Letzter Z�hlerstand: " + reply);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e);
         }
         System.out.println("DatagramSocket wurde geschlossen");

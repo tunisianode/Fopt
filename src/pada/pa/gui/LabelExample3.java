@@ -4,13 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 @SuppressWarnings("serial")
-class MyOtherFrame extends JFrame
-{
-    public MyOtherFrame(String title, String[] labelText, int x, int y)
-    {
+class MyOtherFrame extends JFrame {
+    public MyOtherFrame(String title, String[] labelText, int x, int y) {
         super(title);
-        for(int i = 0; i < labelText.length; i++)
-        {
+        for (int i = 0; i < labelText.length; i++) {
             add(new JLabel(labelText[i]));
         }
         setLayout(new FlowLayout());
@@ -21,10 +18,8 @@ class MyOtherFrame extends JFrame
     }
 }
 
-public class LabelExample3
-{
-    public static void main(String[] args)
-    {
+public class LabelExample3 {
+    public static void main(String[] args) {
         new MyOtherFrame("Beispiel f�r Label", args, 100, 100);
         new MyOtherFrame("Anderes Beispiel f�r Label", args, 100, 200);
     }

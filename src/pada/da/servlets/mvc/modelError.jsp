@@ -6,7 +6,7 @@
 <h3>Fehler in Eingabefeld: "<%= request.getParameter("newValue") %>":
     keine ganze Zahl.</h3>
 
-<a href="modelOkay.jsp">Zur&uuml;ck zur Hauptseite.</a> 
+<a href="modelOkay.jsp">Zur&uuml;ck zur Hauptseite.</a>
 
 </body>
 </html>

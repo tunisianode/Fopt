@@ -4,10 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 @SuppressWarnings("serial")
-public class BorderLayoutExample extends JFrame
-{
-    public BorderLayoutExample(String[] text)
-    {
+public class BorderLayoutExample extends JFrame {
+    public BorderLayoutExample(String[] text) {
         setTitle("Beispiel f�r BorderLayout");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         add(new JButton("Norden"), BorderLayout.NORTH);
@@ -20,8 +18,7 @@ public class BorderLayoutExample extends JFrame
         setVisible(true);
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         new BorderLayoutExample(args);
     }
 }

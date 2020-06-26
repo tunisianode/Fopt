@@ -13,12 +13,10 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TextBox;
 
-public class ServersideCounter implements EntryPoint
-{
+public class ServersideCounter implements EntryPoint {
     private Label answerLabel;
 
-    public void onModuleLoad()
-    {
+    public void onModuleLoad() {
         final Button resetButton = new Button();
         final Button incrementButton = new Button();
         final TextBox inputField = new TextBox();
@@ -41,98 +39,80 @@ public class ServersideCounter implements EntryPoint
         counterService.get(new AsyncHandler(this));
     }
 
-    public void onSuccess(final int newValue)
-    {
+    public void onSuccess(final int newValue) {
         this.answerLabel.setText("" + newValue);
     }
 
-    public void onFailure(final String message)
-    {
+    public void onFailure(final String message) {
         Window.alert("Fehler: " + message);
     }
 }
 
-class ResetHandler implements ClickHandler
-{
+class ResetHandler implements ClickHandler {
     private final CounterServiceAsync counterService;
     private final ServersideCounter serversideCounter;
 
-    public ResetHandler(final CounterServiceAsync counterService, final ServersideCounter serversideCounter)
-    {
+    public ResetHandler(final CounterServiceAsync counterService, final ServersideCounter serversideCounter) {
         this.counterService = counterService;
         this.serversideCounter = serversideCounter;
     }
 
-    public void onClick(final ClickEvent event)
-    {
+    public void onClick(final ClickEvent event) {
         this.counterService.reset(new AsyncHandler(this.serversideCounter));
     }
 }
 
-class IncrementHandler implements ClickHandler
-{
+class IncrementHandler implements ClickHandler {
     private final CounterServiceAsync counterService;
     private final ServersideCounter serversideCounter;
 
-    public IncrementHandler(final CounterServiceAsync counterService, final ServersideCounter serversideCounter)
-    {
+    public IncrementHandler(final CounterServiceAsync counterService, final ServersideCounter serversideCounter) {
         this.counterService = counterService;
         this.serversideCounter = serversideCounter;
     }
 
-    public void onClick(final ClickEvent event)
-    {
+    public void onClick(final ClickEvent event) {
         this.counterService.increment(new AsyncHandler(this.serversideCounter));
     }
 }
 
-class InputHandler implements ChangeHandler
-{
+class InputHandler implements ChangeHandler {
     private final TextBox inputField;
     private final CounterServiceAsync counterService;
     private final ServersideCounter serversideCounter;
 
     public InputHandler(final TextBox inputField, final CounterServiceAsync counterService,
-            final ServersideCounter serversideCounter)
-    {
+                        final ServersideCounter serversideCounter) {
         this.inputField = inputField;
         this.counterService = counterService;
         this.serversideCounter = serversideCounter;
     }
 
-    public void onChange(final ChangeEvent event)
-    {
+    public void onChange(final ChangeEvent event) {
         final String inputString = this.inputField.getText();
         this.inputField.setText("");
-        try
-        {
+        try {
             final int newValue = Integer.parseInt(inputString);
             this.counterService.set(newValue, new AsyncHandler(this.serversideCounter));
-        }
-        catch (final NumberFormatException e)
-        {
+        } catch (final NumberFormatException e) {
         }
     }
 }
 
-class AsyncHandler implements AsyncCallback<Integer>
-{
+class AsyncHandler implements AsyncCallback<Integer> {
     private final ServersideCounter serversideCounter;
 
-    public AsyncHandler(final ServersideCounter serversideCounter)
-    {
+    public AsyncHandler(final ServersideCounter serversideCounter) {
         this.serversideCounter = serversideCounter;
     }
 
     @Override
-    public void onSuccess(final Integer result)
-    {
+    public void onSuccess(final Integer result) {
         this.serversideCounter.onSuccess(result.intValue());
     }
 
     @Override
-    public void onFailure(final Throwable caught)
-    {
+    public void onFailure(final Throwable caught) {
         this.serversideCounter.onFailure(caught.getMessage());
     }
 }

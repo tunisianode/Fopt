@@ -9,11 +9,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/HalloWelt")
-public class HelloWorldServlet extends HttpServlet
-{
+public class HelloWorldServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-              throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html>");

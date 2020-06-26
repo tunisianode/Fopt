@@ -10,11 +10,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/SchlafenAbfragen")
-public class SleepingPollingSessionServlet extends HttpServlet
-{
+public class SleepingPollingSessionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-              throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html>");
@@ -24,45 +22,33 @@ public class SleepingPollingSessionServlet extends HttpServlet
         out.println("<body>");
         out.println("<h1>Schlafen mit Abfragen</h1>");
         HttpSession session = request.getSession(false);
-        if(session != null)
-        {
+        if (session != null) {
             SleepingThread t;
             t = (SleepingThread) session.getAttribute("SleepingThread");
-            if(t != null)
-            {
-                if(t.isAlive())
-                {
+            if (t != null) {
+                if (t.isAlive()) {
                     out.println("Der Auftrag ist noch nicht beendet!");
                     response.setHeader("Refresh", "5");
-                }
-                else
-                {
+                } else {
                     out.println("<b>Der Auftrag ist beendet!</b>");
                     out.println("<p>");
-                    try
-                    {
+                    try {
                         t.join();
-                    }
-                    catch(InterruptedException e)
-                    {
+                    } catch (InterruptedException e) {
                     }
                     out.print("Das Ergebnis lautet: " + t.getMessage());
                     out.println("<p>");
                     out.println("<a "
-                                + "href=\"SchlafenSitzung\">Zur&uuml;ck!</a>");
+                            + "href=\"SchlafenSitzung\">Zur&uuml;ck!</a>");
                     session.invalidate();
                 }
-            }
-            else
-            {
+            } else {
                 out.println("Fehler: Der Auftrag ist unbekannt!");
                 out.println("<p>");
                 out
-                   .println("<a " + "href=\"SchlafenSitzung\">Zur&uuml;ck!</a>");
+                        .println("<a " + "href=\"SchlafenSitzung\">Zur&uuml;ck!</a>");
             }
-        }
-        else
-        {
+        } else {
             out.println("Fehler: Es gibt keine Sitzung!");
             out.println("<p>");
             out.println("<a href=\"SchlafenSitzung\">Zur&uuml;ck!</a>");

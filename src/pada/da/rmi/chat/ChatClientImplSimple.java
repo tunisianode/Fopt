@@ -5,22 +5,18 @@ import java.rmi.server.UnicastRemoteObject;
 
 @SuppressWarnings("serial")
 public class ChatClientImplSimple extends UnicastRemoteObject
-                                  implements ChatClient
-{
+        implements ChatClient {
     private String name;
 
-    public ChatClientImplSimple(String n) throws RemoteException
-    {
+    public ChatClientImplSimple(String n) throws RemoteException {
         name = n;
     }
 
-    public String getName() throws RemoteException
-    {
+    public String getName() throws RemoteException {
         return name;
     }
 
-    public void print(String msg) throws RemoteException
-    {
+    public void print(String msg) throws RemoteException {
         System.out.println(msg);
     }
 }

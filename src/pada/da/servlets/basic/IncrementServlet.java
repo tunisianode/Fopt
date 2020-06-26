@@ -10,11 +10,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/Erhoehen")
-public class IncrementServlet extends HttpServlet
-{
+public class IncrementServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-              throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><head>");

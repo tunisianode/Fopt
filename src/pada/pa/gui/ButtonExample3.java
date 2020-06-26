@@ -6,13 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
-public class ButtonExample3 extends JFrame implements ActionListener
-{
+public class ButtonExample3 extends JFrame implements ActionListener {
     private int times;
     private JLabel l;
 
-    public ButtonExample3()
-    {
+    public ButtonExample3() {
         super("Beispiel f�r Button");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new GridLayout(0, 1));
@@ -26,14 +24,12 @@ public class ButtonExample3 extends JFrame implements ActionListener
         setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent evt)
-    {
+    public void actionPerformed(ActionEvent evt) {
         times++;
         l.setText("Der Button wurde " + times + " mal gedr�ckt.");
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         new ButtonExample3();
     }
 }

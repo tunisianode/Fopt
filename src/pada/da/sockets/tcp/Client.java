@@ -1,30 +1,25 @@
 package pada.da.sockets.tcp;
 
-public class Client
-{
-    public static void main(String args[])
-    {
-        if(args.length != 2)
-        {
+public class Client {
+    public static void main(String args[]) {
+        if (args.length != 2) {
             System.out.println("Notwendige Kommandozeilenargumente: "
-                               + "<Name des Server-Rechners> <Anzahl>");
+                    + "<Name des Server-Rechners> <Anzahl>");
             return;
         }
         // create socket connection
         System.out.println("Aufbau der Verbindung");
-        try(TCPSocket tcpSocket = new TCPSocket(args[0], 1250))
-        {
+        try (TCPSocket tcpSocket = new TCPSocket(args[0], 1250)) {
             // set counter to zero
-            System.out.println("Zähler zurücksetzen");
+            System.out.println("Zï¿½hler zurï¿½cksetzen");
             tcpSocket.sendLine("reset");
             String reply = tcpSocket.receiveLine();
             // get count, initialize start time
-            System.out.println("Zähler erhöhen");
+            System.out.println("Zï¿½hler erhï¿½hen");
             int count = new Integer(args[1]).intValue();
             long startTime = System.currentTimeMillis();
             // perform increment "count" number of times
-            for(int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 tcpSocket.sendLine("increment");
                 reply = tcpSocket.receiveLine();
             }
@@ -32,15 +27,12 @@ public class Client
             long stopTime = System.currentTimeMillis();
             long duration = stopTime - startTime;
             System.out.println("Gesamtzeit = " + duration + " msecs");
-            if(count > 0)
-            {
+            if (count > 0) {
                 System.out.println("Durchschnittszeit = "
-                                   + ((duration) / (float) count) + " msecs");
+                        + ((duration) / (float) count) + " msecs");
             }
-            System.out.println("Letzter Zählerstand: " + reply);
-        }
-        catch(Exception e)
-        {
+            System.out.println("Letzter Zï¿½hlerstand: " + reply);
+        } catch (Exception e) {
             System.out.println(e);
         }
         System.out.println("TCP-Verbindung wurde geschlossen");

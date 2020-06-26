@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="javax.faces-2.2.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../jars/javax.faces-2.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../jars/javax.servlet-api-1.0.5.5-jre13.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

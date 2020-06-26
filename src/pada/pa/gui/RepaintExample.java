@@ -5,21 +5,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-@SuppressWarnings("serial") 
-class CirclePanel extends JPanel
-{
+@SuppressWarnings("serial")
+class CirclePanel extends JPanel {
     private Color color;
 
-    public void setColor(Color c)
-    {
+    public void setColor(Color c) {
         color = c;
         // die folgende Anweisung muss einkommentiert werden,
         // damit das Programm korrekt arbeitet:
         //repaint();
     }
 
-    public void paintComponent(Graphics g)
-    {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(color);
         int diameter = Math.min(getWidth(), getHeight()) - 6;
@@ -28,12 +25,10 @@ class CirclePanel extends JPanel
 }
 
 @SuppressWarnings("serial")
-public class RepaintExample extends JFrame implements ActionListener
-{
+public class RepaintExample extends JFrame implements ActionListener {
     private CirclePanel circlePanel;
 
-    public RepaintExample(String title)
-    {
+    public RepaintExample(String title) {
         super(title);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JPanel total = new JPanel(new BorderLayout());
@@ -56,22 +51,18 @@ public class RepaintExample extends JFrame implements ActionListener
         setVisible(true);
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if(command.equals("Rot"))
-        {
+        if (command.equals("Rot")) {
             circlePanel.setColor(Color.RED);
-        }
-        else
+        } else
         // if(e.equals("Gr�n"))
         {
             circlePanel.setColor(Color.GREEN);
         }
     }
 
-    public static void main(String argv[])
-    {
+    public static void main(String argv[]) {
         new RepaintExample("Farbenwahl");
     }
 }

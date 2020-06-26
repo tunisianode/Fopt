@@ -1,30 +1,24 @@
 package pada.pa.basic;
 
-class Service implements Runnable
-{
+class Service implements Runnable {
     private boolean[] array;
     private int start;
     private int end;
     private int result;
 
-    public Service(boolean[] array, int start, int end)
-    {
+    public Service(boolean[] array, int start, int end) {
         this.array = array;
         this.start = start;
         this.end = end;
     }
 
-    public int getResult()
-    {
+    public int getResult() {
         return result;
     }
 
-    public void run()
-    {
-        for(int i = start; i <= end; i++)
-        {
-            if(array[i])
-            {
+    public void run() {
+        for (int i = start; i <= end; i++) {
+            if (array[i]) {
                 result++;
             }
             /*
@@ -40,48 +34,38 @@ class Service implements Runnable
     }
 }
 
-public class AsynchRequest
-{
+public class AsynchRequest {
     private static final int ARRAY_SIZE = 1000000;
     private static final int NUMBER_OF_SERVERS = 1000;
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         // Startzeit messen
         long startTime = System.currentTimeMillis();
-        
+
         /*
-         * Feld erzeugen mit zufälliger Mischung aus true und false
+         * Feld erzeugen mit zufï¿½lliger Mischung aus true und false
          * (jeder 10. Wert ist true)
          */
         boolean[] array = new boolean[ARRAY_SIZE];
-        for(int i = 0; i < ARRAY_SIZE; i++)
-        {
-            if(Math.random() < 0.1)
-            {
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            if (Math.random() < 0.1) {
                 array[i] = true;
-            }
-            else
-            {
+            } else {
                 array[i] = false;
             }
         }
 
-        // Feld für Services und Threads erzeugen
+        // Feld fï¿½r Services und Threads erzeugen
         Service[] service = new Service[NUMBER_OF_SERVERS];
         Thread[] serverThread = new Thread[NUMBER_OF_SERVERS];
         // Threads erzeugen
         int start = 0;
         int end;
         int howMany = ARRAY_SIZE / NUMBER_OF_SERVERS;
-        for(int i = 0; i < NUMBER_OF_SERVERS; i++)
-        {
-            if(i < NUMBER_OF_SERVERS - 1)
-            {
+        for (int i = 0; i < NUMBER_OF_SERVERS; i++) {
+            if (i < NUMBER_OF_SERVERS - 1) {
                 end = start + howMany - 1;
-            }
-            else
-            {
+            } else {
                 end = ARRAY_SIZE - 1;
             }
             service[i] = new Service(array, start, end);
@@ -91,21 +75,16 @@ public class AsynchRequest
         }
 
         // Synchronisation mit Servern (auf Serverende warten)
-        try
-        {
-            for(int i = 0; i < NUMBER_OF_SERVERS; i++)
-            {
+        try {
+            for (int i = 0; i < NUMBER_OF_SERVERS; i++) {
                 serverThread[i].join();
             }
-        }
-        catch(InterruptedException e)
-        {
+        } catch (InterruptedException e) {
         }
 
         // Gesamtergebnis aus Teilergebnissen berechnen
         int result = 0;
-        for(int i = 0; i < NUMBER_OF_SERVERS; i++)
-        {
+        for (int i = 0; i < NUMBER_OF_SERVERS; i++) {
             result += service[i].getResult();
         }
 

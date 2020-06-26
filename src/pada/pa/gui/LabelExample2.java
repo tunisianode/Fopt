@@ -2,11 +2,9 @@ package pada.pa.gui;
 
 import javax.swing.*;
 
-@SuppressWarnings("serial") 
-class MyFrame extends JFrame
-{
-    public MyFrame(String title, String labelText)
-    {
+@SuppressWarnings("serial")
+class MyFrame extends JFrame {
+    public MyFrame(String title, String labelText) {
         super(title);
         add(new JLabel(labelText));
         setLocation(300, 50);
@@ -15,10 +13,8 @@ class MyFrame extends JFrame
     }
 }
 
-public class LabelExample2
-{
-    public static void main(String[] args)
-    {
-        new MyFrame("Dies ist ein Beispiel für Label", "Hallo Welt");
+public class LabelExample2 {
+    public static void main(String[] args) {
+        new MyFrame("Dies ist ein Beispiel fï¿½r Label", "Hallo Welt");
     }
 }

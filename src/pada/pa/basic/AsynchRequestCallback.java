@@ -1,33 +1,27 @@
 package pada.pa.basic;
 
-interface ResultListener
-{
+interface ResultListener {
     public void putResult(int result);
 }
 
-class ServiceCallback implements Runnable
-{
+class ServiceCallback implements Runnable {
     private boolean[] array;
     private int start;
     private int end;
     private ResultListener h;
 
     public ServiceCallback(boolean[] array, int start, int end,
-                           ResultListener listener)
-    {
+                           ResultListener listener) {
         this.array = array;
         this.start = start;
         this.end = end;
         this.h = listener;
     }
 
-    public void run()
-    {
+    public void run() {
         int result = 0;
-        for(int i = start; i <= end; i++)
-        {
-            if(array[i])
-            {
+        for (int i = start; i <= end; i++) {
+            if (array[i]) {
                 result++;
             }
         }
@@ -35,43 +29,36 @@ class ServiceCallback implements Runnable
     }
 }
 
-class ResultHandler implements ResultListener
-{
+class ResultHandler implements ResultListener {
     private int result;
     private int numberOfResults;
     private int expectedNumberOfResults;
 
-    public ResultHandler(int r)
-    {
+    public ResultHandler(int r) {
         expectedNumberOfResults = r;
     }
 
-    public synchronized void putResult(int r)
-    {
+    public synchronized void putResult(int r) {
         result += r;
         numberOfResults++;
-        if(numberOfResults == expectedNumberOfResults)
-        {
+        if (numberOfResults == expectedNumberOfResults) {
             System.out.println("Ergebnis: " + result);
         }
     }
 }
 
-public class AsynchRequestCallback
-{
+public class AsynchRequestCallback {
     private static final int ARRAY_SIZE = 1000000;
     private static final int NUMBER_OF_SERVERS = 1000;
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         /*
-         * Feld erzeugen mit zufälliger Mischung aus true und false
+         * Feld erzeugen mit zufï¿½lliger Mischung aus true und false
          * (jeder 10. Wert ist true)
          */
         boolean[] array = new boolean[ARRAY_SIZE];
-        for(int i = 0; i < ARRAY_SIZE; i++)
-        {
-            if(Math.random() < 0.1)
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            if (Math.random() < 0.1)
                 array[i] = true;
             else
                 array[i] = false;
@@ -84,14 +71,10 @@ public class AsynchRequestCallback
         int start = 0;
         int end;
         int howMany = ARRAY_SIZE / NUMBER_OF_SERVERS;
-        for(int i = 0; i < NUMBER_OF_SERVERS; i++)
-        {
-            if(i < NUMBER_OF_SERVERS - 1)
-            {
+        for (int i = 0; i < NUMBER_OF_SERVERS; i++) {
+            if (i < NUMBER_OF_SERVERS - 1) {
                 end = start + howMany - 1;
-            }
-            else
-            {
+            } else {
                 end = ARRAY_SIZE - 1;
             }
             ServiceCallback service = new ServiceCallback(array, start, end, h);

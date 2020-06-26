@@ -4,10 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 @SuppressWarnings("serial")
-public class DrawingExample extends JPanel
-{
-    public void paintComponent(Graphics g)
-    {
+public class DrawingExample extends JPanel {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.RED);
         g.drawLine(30, 200, 200, 200);
@@ -21,8 +19,7 @@ public class DrawingExample extends JPanel
         g.drawLine(200, 200, 270, 200);
     }
 
-    public static void main(String argv[])
-    {
+    public static void main(String argv[]) {
         JFrame f = new JFrame("Nikolaus-Haus");
         DrawingExample housePanel = new DrawingExample();
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

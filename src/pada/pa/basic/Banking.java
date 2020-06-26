@@ -4,26 +4,21 @@ class Account // Konto
 {
     private float balance; // Kontostand
 
-    public void setBalance(float balance)
-    {
+    public void setBalance(float balance) {
         this.balance = balance;
     }
 
-    public float getBalance()
-    {
+    public float getBalance() {
         return balance;
     }
 }
 
-class Bank
-{
+class Bank {
     private Account[] account;
 
-    public Bank()
-    {
+    public Bank() {
         account = new Account[100];
-        for(int i = 0; i < account.length; i++)
-        {
+        for (int i = 0; i < account.length; i++) {
             account[i] = new Account();
         }
     }
@@ -36,10 +31,8 @@ class Bank
         account[accountNumber].setBalance(newBalance);
     }
     */
-    public void transferMoney(int accountNumber, float amount)
-    {
-        synchronized(account[accountNumber])
-        {
+    public void transferMoney(int accountNumber, float amount) {
+        synchronized (account[accountNumber]) {
             float oldBalance = account[accountNumber].getBalance();
             float newBalance = oldBalance + amount;
             account[accountNumber].setBalance(newBalance);
@@ -47,21 +40,17 @@ class Bank
     }
 }
 
-class Clerk extends Thread
-{
+class Clerk extends Thread {
     private Bank bank;
 
-    public Clerk(String name, Bank bank)
-    {
+    public Clerk(String name, Bank bank) {
         super(name);
         this.bank = bank;
         start();
     }
 
-    public void run()
-    {
-        for(int i = 0; i < 10000; i++)
-        {
+    public void run() {
+        for (int i = 0; i < 10000; i++) {
             /*
              * Kontonummer einlesen; 2 Grundlegende
              * Synchronisationskonzepte in Java 28 simuliert durch
@@ -70,7 +59,7 @@ class Clerk extends Thread
             int accountNumber = (int) (Math.random() * 100);
 
             /*
-             * Überweisungsbetrag einlesen; simuliert durch Wahl einer
+             * ï¿½berweisungsbetrag einlesen; simuliert durch Wahl einer
              * Zufallszahl zwischen -500 und +499
              */
             float amount = (int) (Math.random() * 1000) - 500;
@@ -80,12 +69,10 @@ class Clerk extends Thread
     }
 }
 
-public class Banking
-{
-    public static void main(String[] args)
-    {
+public class Banking {
+    public static void main(String[] args) {
         Bank myBank = new Bank();
-        new Clerk("Andrea Müller", myBank);
+        new Clerk("Andrea Mï¿½ller", myBank);
         new Clerk("Petra Schmitt", myBank);
     }
 }

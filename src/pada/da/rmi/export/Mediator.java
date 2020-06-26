@@ -5,40 +5,31 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-public class Mediator
-{
+public class Mediator {
     private Counter counter;
 
-    public Mediator(Counter counter)
-    {
+    public Mediator(Counter counter) {
         this.counter = counter;
     }
 
-    public int increment() throws RemoteException
-    {
+    public int increment() throws RemoteException {
         return counter.increment();
     }
 
-    public int reset() throws RemoteException
-    {
+    public int reset() throws RemoteException {
         return counter.reset();
     }
 
-    public void migrate(String host) throws RemoteException
-    {
-        try
-        {
+    public void migrate(String host) throws RemoteException {
+        try {
             Migrator migrator = (Migrator) Naming.lookup("rmi://" + host
-                                                         + "/Migrator");
+                    + "/Migrator");
             counter = migrator.migrate(counter);
-        }
-        catch(MalformedURLException | NotBoundException e)
-        {
+        } catch (MalformedURLException | NotBoundException e) {
         }
     }
 
-    public void comeBack() throws RemoteException
-    {
+    public void comeBack() throws RemoteException {
         counter = counter.comeBack();
     }
 }

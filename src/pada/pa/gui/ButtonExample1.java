@@ -5,10 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
-public class ButtonExample1 extends JFrame
-{
-    public ButtonExample1()
-    {
+public class ButtonExample1 extends JFrame {
+    public ButtonExample1() {
         super("Beispiel f�r Button");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JButton b = new JButton("Dr�ck mich!");
@@ -20,16 +18,13 @@ public class ButtonExample1 extends JFrame
         setVisible(true);
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         new ButtonExample1();
     }
 }
 
-class MyHandler implements ActionListener
-{
-    public void actionPerformed(ActionEvent evt)
-    {
+class MyHandler implements ActionListener {
+    public void actionPerformed(ActionEvent evt) {
         System.out.println("Der Button wurde gedr�ckt.");
     }
 }

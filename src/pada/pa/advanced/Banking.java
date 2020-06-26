@@ -1,40 +1,31 @@
 package pada.pa.advanced;
 
-class Account
-{
+class Account {
     private float balance;
 
-    public void debitOrCredit(float amount)
-    {
+    public void debitOrCredit(float amount) {
         balance += amount;
     }
 
-    public float getBalance()
-    {
+    public float getBalance() {
         return balance;
     }
 }
 
-class Bank
-{
+class Bank {
     private Account[] account;
 
-    public Bank()
-    {
+    public Bank() {
         account = new Account[100];
-        for(int i = 0; i < account.length; i++)
-        {
+        for (int i = 0; i < account.length; i++) {
             account[i] = new Account();
         }
     }
 
     public void transferMoney(int fromAccountNumber, int toAccountNumber,
-                              float amount)
-    {
-        synchronized(account[fromAccountNumber])
-        {
-            synchronized(account[toAccountNumber])
-            {
+                              float amount) {
+        synchronized (account[fromAccountNumber]) {
+            synchronized (account[toAccountNumber]) {
                 account[fromAccountNumber].debitOrCredit(-amount);
                 account[toAccountNumber].debitOrCredit(amount);
             }
@@ -42,21 +33,17 @@ class Bank
     }
 }
 
-class Clerk extends Thread
-{
+class Clerk extends Thread {
     private Bank bank;
 
-    public Clerk(String name, Bank bank)
-    {
+    public Clerk(String name, Bank bank) {
         super(name);
         this.bank = bank;
         start();
     }
 
-    public void run()
-    {
-        for(int i = 0; i < 10000; i++)
-        {
+    public void run() {
+        for (int i = 0; i < 10000; i++) {
             /*
              * Nummer eines Kontos einlesen, von dem abgebucht wird;
              * simuliert durch Wahl einer Zufallszahl zwischen 0 und
@@ -70,7 +57,7 @@ class Clerk extends Thread
              */
             int toAccountNumber = (int) (Math.random() * 100);
             /*
-             * Überweisungsbetrag einlesen; simuliert durch Wahl einer
+             * ï¿½berweisungsbetrag einlesen; simuliert durch Wahl einer
              * Zufallszahl zwischen -500 und +499
              */
             float amount = (int) (Math.random() * 1000) - 500;
@@ -79,12 +66,10 @@ class Clerk extends Thread
     }
 }
 
-public class Banking
-{
-    public static void main(String[] args)
-    {
+public class Banking {
+    public static void main(String[] args) {
         Bank myBank = new Bank();
-        new Clerk("Andrea Müller", myBank);
+        new Clerk("Andrea Mï¿½ller", myBank);
         new Clerk("Petra Schmitt", myBank);
     }
 }

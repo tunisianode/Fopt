@@ -31,7 +31,7 @@
 
         ClientCounter.socket = null;
 
-        ClientCounter.connect = (function(host) {
+        ClientCounter.connect = (function (host) {
             if ('WebSocket' in window) {
                 ClientCounter.socket = new WebSocket(host);
             } else if ('MozWebSocket' in window) {
@@ -60,7 +60,7 @@
             };
         });
 
-        ClientCounter.initialize = function() {
+        ClientCounter.initialize = function () {
             if (window.location.protocol == 'http:') {
                 ClientCounter.connect('ws://' + window.location.host + '/eva/websocket/counter');
             } else {
@@ -68,17 +68,17 @@
             }
         };
 
-        ClientCounter.increment = (function() {
+        ClientCounter.increment = (function () {
             ClientCounter.socket.send('increment');
         });
 
-        ClientCounter.reset = (function() {
+        ClientCounter.reset = (function () {
             ClientCounter.socket.send('reset');
         });
 
         var Console = {};
 
-        Console.log = (function(message) {
+        Console.log = (function (message) {
             var console = document.getElementById('console');
             var p = document.createElement('p');
             p.style.wordWrap = 'break-word';
@@ -95,19 +95,19 @@
     </script>
 </head>
 <body>
-    <h1>Z&auml;hler mit WebSockets</h1>
-    
-    <p>
-    <div>
-        <button id="increment" onclick="ClientCounter.increment();">Increment</button>
-        <button id="reset" onclick="ClientCounter.reset();">Reset</button>
- 	</div>
- 	</p>
- 	
- 	<p>
-    <div id="console-container">
-        <div id="console"></div>
-    </div>
-    </p>
+<h1>Z&auml;hler mit WebSockets</h1>
+
+<p>
+<div>
+    <button id="increment" onclick="ClientCounter.increment();">Increment</button>
+    <button id="reset" onclick="ClientCounter.reset();">Reset</button>
+</div>
+</p>
+
+<p>
+<div id="console-container">
+    <div id="console"></div>
+</div>
+</p>
 </body>
 </html>

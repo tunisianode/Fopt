@@ -3,15 +3,12 @@ package pada.da.rmi.export;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class Client
-{
-    public static void main(String args[])
-    {
+public class Client {
+    public static void main(String args[]) {
         BufferedReader sysIn = new BufferedReader(
-                                   new InputStreamReader(
-                                       System.in));
-        try
-        {
+                new InputStreamReader(
+                        System.in));
+        try {
             Counter counter = new CounterImpl();
             Mediator mediator = new Mediator(counter);
             int value;
@@ -45,9 +42,7 @@ public class Client
             sysIn.readLine();
             value = mediator.increment();
             System.out.println("neuer Zaehlerwert: " + value);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println("Ausnahme: " + e);
         }
     }

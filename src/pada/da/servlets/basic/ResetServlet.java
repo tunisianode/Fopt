@@ -9,19 +9,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(value="/Zuruecksetzen", loadOnStartup=1)
-public class ResetServlet extends HttpServlet
-{
-    public void init()
-    {
+@WebServlet(value = "/Zuruecksetzen", loadOnStartup = 1)
+public class ResetServlet extends HttpServlet {
+    public void init() {
         Counter counter = new Counter();
         ServletContext ctx = getServletContext();
         ctx.setAttribute("Counter", counter);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-              throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><head>");
@@ -33,7 +30,7 @@ public class ResetServlet extends HttpServlet
         Counter counter = (Counter) ctx.getAttribute("Counter");
         int value = counter.reset();
         out.println("Der Z&auml;hler wurde auf " + value
-                    + " zur&uuml;ckgesetzt.<p>");
+                + " zur&uuml;ckgesetzt.<p>");
         out.println("</body>");
         out.println("</html>");
     }

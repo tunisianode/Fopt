@@ -9,12 +9,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(value="/SchlafenSitzung")
-public class SleepingSessionServlet extends HttpServlet
-{
+@WebServlet(value = "/SchlafenSitzung")
+public class SleepingSessionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-              throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html>");
@@ -24,13 +22,10 @@ public class SleepingSessionServlet extends HttpServlet
         out.println("<body>");
         out.println("<h1>Schlafen mit Abfragen</h1>");
         String secsString = request.getParameter("Sekunden");
-        if(secsString != null)
-        {
-            try
-            {
+        if (secsString != null) {
+            try {
                 int secs = Integer.parseInt(secsString);
-                if(secs < 0)
-                {
+                if (secs < 0) {
                     throw new NumberFormatException();
                 }
                 SleepingThread t = new SleepingThread(secs);
@@ -45,11 +40,9 @@ public class SleepingSessionServlet extends HttpServlet
                 out.println("</body>");
                 out.println("</html>");
                 return;
-            }
-            catch(NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 out.println("Es muss eine nicht negative Zahl "
-                            + "eingegeben werden.");
+                        + "eingegeben werden.");
             }
         }
         out.println("<h2>GET-Formular");
@@ -67,8 +60,7 @@ public class SleepingSessionServlet extends HttpServlet
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-              throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         doGet(request, response);
     }
 }

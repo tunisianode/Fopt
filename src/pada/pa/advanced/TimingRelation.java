@@ -1,23 +1,19 @@
 package pada.pa.advanced;
 
-class T1 extends Thread
-{
+class T1 extends Thread {
     private Semaphore[] sems;
 
-    public T1(Semaphore[] sems, String name)
-    {
+    public T1(Semaphore[] sems, String name) {
         super(name);
         this.sems = sems;
         start();
     }
 
-    private void a1()
-    {
+    private void a1() {
         System.out.println("a1");
     }
 
-    public void run()
-    {
+    public void run() {
         a1();
         sems[0].v();
         sems[1].v();
@@ -25,96 +21,80 @@ class T1 extends Thread
     }
 }
 
-class T2 extends Thread
-{
+class T2 extends Thread {
     private Semaphore[] sems;
 
-    public T2(Semaphore[] sems, String name)
-    {
+    public T2(Semaphore[] sems, String name) {
         super(name);
         this.sems = sems;
         start();
     }
 
-    private void a2()
-    {
+    private void a2() {
         System.out.println("a2");
     }
 
-    public void run()
-    {
+    public void run() {
         sems[0].p();
         a2();
         sems[3].v();
     }
 }
 
-class T3 extends Thread
-{
+class T3 extends Thread {
     private Semaphore[] sems;
 
-    public T3(Semaphore[] sems, String name)
-    {
+    public T3(Semaphore[] sems, String name) {
         super(name);
         this.sems = sems;
         start();
     }
 
-    private void a3()
-    {
+    private void a3() {
         System.out.println("a3");
     }
 
-    public void run()
-    {
+    public void run() {
         sems[1].p();
         a3();
         sems[4].v();
     }
 }
 
-class T4 extends Thread
-{
+class T4 extends Thread {
     private Semaphore[] sems;
 
-    public T4(Semaphore[] sems, String name)
-    {
+    public T4(Semaphore[] sems, String name) {
         super(name);
         this.sems = sems;
         start();
     }
 
-    private void a4()
-    {
+    private void a4() {
         System.out.println("a4");
     }
 
-    public void run()
-    {
+    public void run() {
         sems[2].p();
         a4();
         sems[5].v();
     }
 }
 
-class T5 extends Thread
-{
+class T5 extends Thread {
     private Semaphore[] sems;
 
-    public T5(Semaphore[] sems, String name)
-    {
+    public T5(Semaphore[] sems, String name) {
         super(name);
         this.sems = sems;
         start();
     }
 
-    private void a5()
-    {
+    private void a5() {
         System.out.println("a5");
     }
 
-    public void run()
-    {
+    public void run() {
         sems[3].p();
         sems[4].p();
         sems[5].p();
@@ -122,13 +102,10 @@ class T5 extends Thread
     }
 }
 
-public class TimingRelation
-{
-    public static void main(String[] args)
-    {
+public class TimingRelation {
+    public static void main(String[] args) {
         Semaphore[] sems = new Semaphore[6];
-        for(int i = 0; i < sems.length; i++)
-        {
+        for (int i = 0; i < sems.length; i++) {
             sems[i] = new Semaphore(0);
         }
         new T1(sems, "T1");

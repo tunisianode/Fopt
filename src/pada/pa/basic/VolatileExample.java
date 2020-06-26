@@ -1,16 +1,13 @@
 package pada.pa.basic;
 
-class VolatileExample
-{
+class VolatileExample {
     private volatile int value;
 
-    public void setValue(int value)
-    {
+    public void setValue(int value) {
         this.value = value;
     }
 
-    public int getValue()
-    {
+    public int getValue() {
         return value;
     }
 }

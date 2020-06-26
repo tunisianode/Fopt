@@ -1,31 +1,27 @@
 package pada.pa.advanced;
 
-public class ResourceManagerNaive implements ResourceManager
-{
+public class ResourceManagerNaive implements ResourceManager {
     private SemaphoreGroup availableResources;
 
-    public ResourceManagerNaive(int[] initialResources)
-    {
+    public ResourceManagerNaive(int[] initialResources) {
         availableResources = new SemaphoreGroup(initialResources.length);
         availableResources.changeValues(initialResources);
     }
 
-    public void acquire(int[] resources)
-    {
+    public void acquire(int[] resources) {
         /*
-         * angeforderte Ressourcen müssen von verfügbaren Ressourcen
+         * angeforderte Ressourcen mï¿½ssen von verfï¿½gbaren Ressourcen
          * abgezogen werden
          */
         int[] tmp = new int[resources.length];
-        for(int i = 0; i < resources.length; i++)
+        for (int i = 0; i < resources.length; i++)
             tmp[i] = -resources[i];
         availableResources.changeValues(tmp);
     }
 
-    public void release(int[] resources)
-    {
+    public void release(int[] resources) {
         /*
-         * zurückgegebene Ressourcen müssen zu verfügbaren Ressourcen
+         * zurï¿½ckgegebene Ressourcen mï¿½ssen zu verfï¿½gbaren Ressourcen
          * addiert werden
          */
         availableResources.changeValues(resources);

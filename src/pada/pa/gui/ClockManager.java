@@ -5,131 +5,98 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-class Clock
-{
+class Clock {
     private JLabel label;
     private long startTime;
 
-    public Clock(JLabel label)
-    {
+    public Clock(JLabel label) {
         this.label = label;
         reset();
     }
 
-    public void update()
-    {
+    public void update() {
         long elapsedTime = System.currentTimeMillis() - startTime;
         long seconds = elapsedTime / 1000;
         long milliSecs = elapsedTime % 1000;
         String prefix;
-        if(milliSecs < 10)
-        {
+        if (milliSecs < 10) {
             prefix = "00";
-        }
-        else if(milliSecs < 100)
-        {
+        } else if (milliSecs < 100) {
             prefix = "0";
-        }
-        else
-        {
+        } else {
             prefix = "";
         }
         label.setText(seconds + ":" + prefix + milliSecs);
     }
 
-    public void reset()
-    {
+    public void reset() {
         startTime = System.currentTimeMillis();
         update();
     }
 }
 
-class UpdateRequest implements Runnable
-{
+class UpdateRequest implements Runnable {
     private Clock clock;
 
-    public UpdateRequest(Clock clock)
-    {
+    public UpdateRequest(Clock clock) {
         this.clock = clock;
     }
 
-    public void run()
-    {
+    public void run() {
         clock.update();
     }
 }
 
-class Ticker extends Thread
-{
+class Ticker extends Thread {
     private final static long UPDATE_INTERVAL = 10; // Milliseconds
     private UpdateRequest updateReq;
 
-    public Ticker(Clock clock)
-    {
+    public Ticker(Clock clock) {
         updateReq = new UpdateRequest(clock);
         start();
     }
 
-    public void run()
-    {
-        try
-        {
-            while(!isInterrupted())
-            {
+    public void run() {
+        try {
+            while (!isInterrupted()) {
                 EventQueue.invokeLater(updateReq);
                 Thread.sleep(UPDATE_INTERVAL);
             }
-        }
-        catch(InterruptedException e)
-        {
+        } catch (InterruptedException e) {
         }
     }
 }
 
-class EventHandler implements ActionListener
-{
+class EventHandler implements ActionListener {
     private Clock clock;
     private Ticker ticker;
 
-    public EventHandler(Clock clock)
-    {
+    public EventHandler(Clock clock) {
         this.clock = clock;
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
+    public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
-        if(s.equals("Start"))
-        {
-            if(ticker == null)
-            {
+        if (s.equals("Start")) {
+            if (ticker == null) {
                 clock.reset();
                 ticker = new Ticker(clock);
             }
-        }
-        else if(s.equals("Stopp"))
-        {
-            if(ticker != null)
-            {
+        } else if (s.equals("Stopp")) {
+            if (ticker != null) {
                 ticker.interrupt();
                 ticker = null;
             }
-        }
-        else if(s.equals("Null"))
-        {
+        } else if (s.equals("Null")) {
             clock.reset();
-        }
-        else if(s.equals("Ende"))
-        {
+        } else if (s.equals("Ende")) {
             System.exit(0);
         }
     }
 }
 
-public class ClockManager
-{
-    public static void main(String[] args)
-    {
+public class ClockManager {
+    public static void main(String[] args) {
         JFrame f = new JFrame("Uhr");
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setLayout(new GridLayout(0, 1));

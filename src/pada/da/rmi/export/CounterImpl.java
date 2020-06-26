@@ -5,27 +5,23 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 @SuppressWarnings("serial")
-public class CounterImpl implements Counter, Serializable
-{
+public class CounterImpl implements Counter, Serializable {
     private int counter;
 
-    public int reset() throws RemoteException
-    {
+    public int reset() throws RemoteException {
         counter = 0;
         System.out.println("---> Zaehler wurde zurueckgesetzt <---");
         return counter;
     }
 
-    public int increment() throws RemoteException
-    {
+    public int increment() throws RemoteException {
         counter++;
         System.out.println("---> Zaehler wurde erhoeht, " + "neuer Stand: "
-                           + counter + " <---");
+                + counter + " <---");
         return counter;
     }
 
-    public Counter comeBack() throws RemoteException
-    {
+    public Counter comeBack() throws RemoteException {
         UnicastRemoteObject.unexportObject(this, true);
         return this;
     }

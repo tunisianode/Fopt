@@ -1,42 +1,34 @@
 package pada.pa.advanced;
 
-class X
-{
+class X {
     private X otherX;
 
-    public void setPartner(X otherX)
-    {
+    public void setPartner(X otherX) {
         this.otherX = otherX;
     }
 
-    public synchronized void m1()
-    {
+    public synchronized void m1() {
         otherX.m2();
     }
 
-    public synchronized void m2()
-    {
+    public synchronized void m2() {
         // nicht weiter wichtig
     }
 }
 
-public class UserOfX extends Thread
-{
+public class UserOfX extends Thread {
     private X myX;
 
-    public UserOfX(X x)
-    {
+    public UserOfX(X x) {
         myX = x;
     }
 
-    public void run()
-    {
-        for(int i = 0; i < 10000; i++)
+    public void run() {
+        for (int i = 0; i < 10000; i++)
             myX.m1();
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         X x1 = new X();
         X x2 = new X();
         x1.setPartner(x2);

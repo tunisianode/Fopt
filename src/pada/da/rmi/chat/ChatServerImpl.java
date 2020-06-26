@@ -6,31 +6,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 @SuppressWarnings("serial")
-public class ChatServerImpl extends UnicastRemoteObject implements ChatServer
-{
+public class ChatServerImpl extends UnicastRemoteObject implements ChatServer {
     private ArrayList<ChatClient> allClients;
 
-    public ChatServerImpl() throws RemoteException
-    {
+    public ChatServerImpl() throws RemoteException {
         allClients = new ArrayList<ChatClient>();
     }
 
     public synchronized boolean addClient(ChatClient objRef)
-                                                            throws RemoteException
-    {
+            throws RemoteException {
         String name = objRef.getName();
-        for(Iterator<ChatClient> iter = allClients.iterator(); iter.hasNext();)
-        {
+        for (Iterator<ChatClient> iter = allClients.iterator(); iter.hasNext(); ) {
             ChatClient cc = iter.next();
-            try
-            {
-                if(cc.getName().equals(name))
-                {
+            try {
+                if (cc.getName().equals(name)) {
                     return false;
                 }
-            }
-            catch(RemoteException exc)
-            {
+            } catch (RemoteException exc) {
                 iter.remove();
             }
         }
@@ -39,23 +31,17 @@ public class ChatServerImpl extends UnicastRemoteObject implements ChatServer
     }
 
     public synchronized void removeClient(ChatClient objRef)
-                                                            throws RemoteException
-    {
+            throws RemoteException {
         allClients.remove(objRef);
     }
 
     public synchronized void sendMessage(String name, String msg)
-                                                                 throws RemoteException
-    {
-        for(Iterator<ChatClient> iter = allClients.iterator(); iter.hasNext();)
-        {
+            throws RemoteException {
+        for (Iterator<ChatClient> iter = allClients.iterator(); iter.hasNext(); ) {
             ChatClient cc = iter.next();
-            try
-            {
+            try {
                 cc.print(name + ": " + msg);
-            }
-            catch(RemoteException exc)
-            {
+            } catch (RemoteException exc) {
                 iter.remove();
             }
         }

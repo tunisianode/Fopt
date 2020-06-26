@@ -8,12 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet(value="/Tee")
-public class TeaServlet extends HttpServlet
-{
+@WebServlet(value = "/Tee")
+public class TeaServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-              throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html>");
@@ -28,21 +26,19 @@ public class TeaServlet extends HttpServlet
         out.println("<li>Teesorte: " + request.getParameter("Teesorte"));
         out.println("<li>bestellt von: " + request.getParameter("Besteller"));
         out.println("<li>Kartennummer (nur zur Demo angezeigt): "
-                    + request.getParameter("Kreditkartennummer"));
-        if(request.getParameter("Eile") != null)
-        {
+                + request.getParameter("Kreditkartennummer"));
+        if (request.getParameter("Eile") != null) {
             out.println("<li><b>Eilbestellung</b>");
         }
         out.println("</ul>");
         out.println("Vielen Dank f&uuml;r Ihren Auftrag. "
-                    + "Bestellen Sie bald wieder bei uns!");
+                + "Bestellen Sie bald wieder bei uns!");
         out.println("</body>");
         out.println("</html>");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-              throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         doPost(request, response);
     }
 }

@@ -3,8 +3,7 @@ package pada.pa.advanced;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-class BufferLock
-{
+class BufferLock {
     private int head;
     private int tail;
     private int count;
@@ -13,8 +12,7 @@ class BufferLock
     private Condition notFull;
     private Condition notEmpty;
 
-    public BufferLock(int n)
-    {
+    public BufferLock(int n) {
         head = 0;
         tail = 0;
         count = 0;
@@ -24,111 +22,89 @@ class BufferLock
         notEmpty = lock.newCondition();
     }
 
-    private void dump()
-    {
+    private void dump() {
         System.out.print("\t\t\tPufferinhalt: [ ");
         int index = head;
-        for(int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++) {
             System.out.print(data[index] + " ");
             index++;
-            if(index == data.length)
+            if (index == data.length)
                 index = 0;
         }
         System.out.println("]");
     }
 
-    public void put(int x)
-    {
+    public void put(int x) {
         lock.lock();
-        try
-        {
-            while(count == data.length)
-            {
+        try {
+            while (count == data.length) {
                 notFull.awaitUninterruptibly();
             }
             data[tail++] = x;
-            if(tail == data.length)
+            if (tail == data.length)
                 tail = 0;
             count++;
             dump();
             notEmpty.signal();
-        }
-        finally
-        {
+        } finally {
             lock.unlock();
         }
     }
 
-    public int get()
-    {
+    public int get() {
         lock.lock();
-        try
-        {
-            while(count == 0)
-            {
+        try {
+            while (count == 0) {
                 notEmpty.awaitUninterruptibly();
             }
             int result = data[head++];
-            if(head == data.length)
+            if (head == data.length)
                 head = 0;
             count--;
             dump();
             notFull.signal();
             return result;
-        }
-        finally
-        {
+        } finally {
             lock.unlock();
         }
     }
 }
 
-class ProducerLock extends Thread
-{
+class ProducerLock extends Thread {
     private BufferLock buffer;
     private int start;
 
-    public ProducerLock(BufferLock b, int s, String name)
-    {
+    public ProducerLock(BufferLock b, int s, String name) {
         super(name);
         buffer = b;
         start = s;
     }
 
-    public void run()
-    {
-        for(int i = start; i < start + 100; i++)
-        {
+    public void run() {
+        for (int i = start; i < start + 100; i++) {
             buffer.put(i);
         }
     }
 }
 
-class ConsumerLock extends Thread
-{
+class ConsumerLock extends Thread {
     private BufferLock buffer;
 
-    public ConsumerLock(BufferLock b, String name)
-    {
+    public ConsumerLock(BufferLock b, String name) {
         super(name);
         buffer = b;
     }
 
-    public void run()
-    {
-        for(int i = 0; i < 100; i++)
-        {
+    public void run() {
+        for (int i = 0; i < 100; i++) {
             int x = buffer.get();
             System.out.println("verbraucht " + x);
         }
     }
 }
 
-public class ProducerConsumerLock
-{
-    public static void main(String[] args)
-    {
+public class ProducerConsumerLock {
+    public static void main(String[] args) {
         BufferLock p = new BufferLock(5);
         ConsumerLock v1 = new ConsumerLock(p, "V1");
         ConsumerLock v2 = new ConsumerLock(p, "V2");

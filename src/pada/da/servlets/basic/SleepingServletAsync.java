@@ -12,30 +12,26 @@ import java.util.concurrent.DelayQueue;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
 
-@WebServlet(value="/SchlafenAsync", asyncSupported=true,
-            loadOnStartup=1)
-public class SleepingServletAsync extends HttpServlet
-{
+@WebServlet(value = "/SchlafenAsync", asyncSupported = true,
+        loadOnStartup = 1)
+public class SleepingServletAsync extends HttpServlet {
     private static final long serialVersionUID = 7968546825609574805L;
 
     private DelayQueue<Job> queue;
     private SingleServletWorker worker;
-    
-    public void init()
-    {
+
+    public void init() {
         queue = new DelayQueue<>();
         worker = new SingleServletWorker(queue);
         worker.start();
     }
-    
-    public void destroy()
-    {
+
+    public void destroy() {
         worker.interrupt();
     }
-    
+
     public void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html>");
@@ -45,25 +41,19 @@ public class SleepingServletAsync extends HttpServlet
         out.println("<body>");
         out.println("<h1>Asynchrones Schlafen</h1>");
         out.println("<h3>Das Servlet wird ausgef�hrt von Thread \"" +
-                    Thread.currentThread().getName() + "\".</h3>");
+                Thread.currentThread().getName() + "\".</h3>");
 
-        if(Thread.holdsLock(this))
-        {
+        if (Thread.holdsLock(this)) {
             out.println("<p><b>Das Servlet ist synchronisiert.</b></p>");
-        }
-        else
-        {
+        } else {
             out.println("<p>Das Servlet ist nicht synchronisiert.</p>");
         }
 
         String secsString = request.getParameter("Sekunden");
-        if(secsString != null)
-        {
-            try
-            {
+        if (secsString != null) {
+            try {
                 long msecs = Integer.parseInt(secsString) * 1000L;
-                if(!request.isAsyncSupported())
-                {
+                if (!request.isAsyncSupported()) {
                     request.setAttribute("org.apache.catalina.ASYNC_SUPPORTED", true);
                 }
                 AsyncContext asyncContext = request.startAsync();
@@ -74,16 +64,12 @@ public class SleepingServletAsync extends HttpServlet
                 */
                 Job job = new Job(msecs, asyncContext);
                 queue.put(job);
-            }
-            catch(NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 out.println("<p>Keine oder falsche Sekundenangabe!</p>");
                 out.println("</body>");
                 out.println("</html>");
             }
-        }
-        else
-        {
+        } else {
             out.println("<h2>GET-Formular</h2>");
             out.println("<p><form method=\"get\">");
             out.println("<input name=\"Sekunden\">");
@@ -95,155 +81,127 @@ public class SleepingServletAsync extends HttpServlet
             out.println("<input name=\"Sekunden\">");
             out.println("<input type=\"submit\" value=\"Los!\">");
             out.println("</form></p>");
-            
+
             out.println("</body>");
             out.println("</html>");
         }
     }
 
     public synchronized void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         doGet(request, response);
     }
 }
 
-class ServletSlave extends Thread
-{
+class ServletSlave extends Thread {
     private long msecs;
     private AsyncContext asyncContext;
-    
-    public ServletSlave(long msecs, AsyncContext asyncContext)
-    {
+
+    public ServletSlave(long msecs, AsyncContext asyncContext) {
         this.msecs = msecs;
         this.asyncContext = asyncContext;
     }
 
-    public void run()
-    {
+    public void run() {
         PrintWriter out;
-        try
-        {
+        try {
             out = asyncContext.getResponse().getWriter();
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             return;
         }
-        
-        try
-        {
+
+        try {
             Thread.sleep(msecs);
             out.println("Es wurden " + msecs + " Millisekunden von " +
-                        Thread.currentThread().getName() +
-                        " geschlafen.");
-        }
-        catch(Exception e)
-        {
+                    Thread.currentThread().getName() +
+                    " geschlafen.");
+        } catch (Exception e) {
             out.println("Es gab Probleme beim Schlafen.");
         }
-        
+
         out.println("</body>");
         out.println("</html>");
         asyncContext.complete();
     }
 }
 
-class Job implements Delayed
-{
+class Job implements Delayed {
     private static long jobCounter;
-    
+
     private long startTime;
     private long delay;
     private AsyncContext asyncContext;
     private long jobNumber;
 
-    public Job(long delay, AsyncContext asyncContext)
-    {
+    public Job(long delay, AsyncContext asyncContext) {
         this.startTime = System.currentTimeMillis();
         this.delay = delay;
         this.asyncContext = asyncContext;
         this.jobNumber = getNextJobNumber();
     }
 
-    private static synchronized long getNextJobNumber()
-    {
+    private static synchronized long getNextJobNumber() {
         return ++jobCounter;
     }
 
-    public long getDelay()
-    {
+    public long getDelay() {
         return delay;
     }
-    
-    public AsyncContext getAsyncContext()
-    {
+
+    public AsyncContext getAsyncContext() {
         return asyncContext;
     }
 
-    public long getJobNumber()
-    {
+    public long getJobNumber() {
         return jobNumber;
     }
 
-    public long getDelay(TimeUnit unit)
-    {
+    public long getDelay(TimeUnit unit) {
         long expireTime = startTime + delay;
         return unit.convert(expireTime - System.currentTimeMillis(),
-                            TimeUnit.MILLISECONDS);
+                TimeUnit.MILLISECONDS);
     }
 
-    public int compareTo(Delayed o)
-    {
+    public int compareTo(Delayed o) {
         long d = getDelay(TimeUnit.MILLISECONDS) -
-                 o.getDelay(TimeUnit.MILLISECONDS);
+                o.getDelay(TimeUnit.MILLISECONDS);
         return d == 0 ? 0 : (d < 0 ? -1 : 1);
     }
 }
 
-class SingleServletWorker extends Thread
-{
+class SingleServletWorker extends Thread {
     private DelayQueue<Job> queue;
-    
-    public SingleServletWorker(DelayQueue<Job> queue)
-    {
+
+    public SingleServletWorker(DelayQueue<Job> queue) {
         this.queue = queue;
     }
 
-    public void run()
-    {
-        while(!isInterrupted())
-        {
+    public void run() {
+        while (!isInterrupted()) {
             Job job;
-            try
-            {
+            try {
                 job = queue.take();
-            }
-            catch(InterruptedException e1)
-            {
+            } catch (InterruptedException e1) {
                 System.out.println("Worker-Thread beendet sich.");
                 return;
             }
-            
+
             AsyncContext asyncContext = job.getAsyncContext();
             PrintWriter out;
-            try
-            {
+            try {
                 out = asyncContext.getResponse().getWriter();
-            }
-            catch(Exception e)
-            {
+            } catch (Exception e) {
                 continue;
             }
-            
+
             long delay = job.getDelay();
             out.println("<p>Der Auftrag mit der Bearbeitungsdauer von " +
-                        delay + " Millisekunden wurde bearbeitet.</p>");
+                    delay + " Millisekunden wurde bearbeitet.</p>");
             out.println("<p>Die Antwort wurde von Thread \"" +
-                        Thread.currentThread().getName() +
-                        "\" erzeugt.</p>");
+                    Thread.currentThread().getName() +
+                    "\" erzeugt.</p>");
             out.println("<p>Damit ist Job Nr. " + job.getJobNumber() +
-                        " abgearbeitet.</p>");
+                    " abgearbeitet.</p>");
             out.println("</body>");
             out.println("</html>");
             asyncContext.complete();

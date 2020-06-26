@@ -7,60 +7,48 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-class RecursiveFacCallable implements Callable<Integer>
-{
+class RecursiveFacCallable implements Callable<Integer> {
     private int n;
     private ThreadPoolExecutor pool;
 
-    public RecursiveFacCallable(int n, ThreadPoolExecutor pool)
-    {
+    public RecursiveFacCallable(int n, ThreadPoolExecutor pool) {
         this.n = n;
         this.pool = pool;
     }
 
-    public Integer call()
-    {
+    public Integer call() {
         System.out.println("call executed by " +
-                           Thread.currentThread().getName());
-        if(n == 0)
-        {
+                Thread.currentThread().getName());
+        if (n == 0) {
             return 1;
         }
-        RecursiveFacCallable rcs = new RecursiveFacCallable(n-1, pool);
+        RecursiveFacCallable rcs = new RecursiveFacCallable(n - 1, pool);
         List<Callable<Integer>> list = new ArrayList<>();
         list.add(rcs);
-        try
-        {
+        try {
             int r = pool.invokeAny(list);
             return n * r;
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return 0;
         }
     }
 }
 
-public class FacThreadPool
-{
-    public static void main(String[] args)
-    {
-        ThreadPoolExecutor pool = 
-            new ThreadPoolExecutor(5, 5,
-                                   0L, TimeUnit.SECONDS,
-                                   new SynchronousQueue<Runnable>());
+public class FacThreadPool {
+    public static void main(String[] args) {
+        ThreadPoolExecutor pool =
+                new ThreadPoolExecutor(5, 5,
+                        0L, TimeUnit.SECONDS,
+                        new SynchronousQueue<Runnable>());
 
         RecursiveFacCallable c = new RecursiveFacCallable(5, pool);
         ArrayList<RecursiveFacCallable> reqs = new ArrayList<>();
         reqs.add(c);
-        try
-        {
+        try {
             int result = pool.invokeAny(reqs);
             System.out.println("Ergebnis: " + result);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         pool.shutdown();

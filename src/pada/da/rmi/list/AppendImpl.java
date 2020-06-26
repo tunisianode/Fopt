@@ -4,14 +4,11 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 @SuppressWarnings("serial")
-public class AppendImpl extends UnicastRemoteObject implements Append
-{
-    public AppendImpl() throws RemoteException
-    {
+public class AppendImpl extends UnicastRemoteObject implements Append {
+    public AppendImpl() throws RemoteException {
     }
 
-    public List append(List l) throws RemoteException
-    {
+    public List append(List l) throws RemoteException {
         System.out.print("erhaltene Liste: ");
         l.print();
         l.append(4711);

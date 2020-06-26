@@ -9,24 +9,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/Herunterladen")
-public class DownloadServlet extends HttpServlet
-{
+public class DownloadServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
-              throws IOException, ServletException
-    {
+            throws IOException, ServletException {
         String linesString = request.getParameter("lines");
         int numberOfLines = 0;
-        try
-        {
+        try {
             numberOfLines = Integer.parseInt(linesString);
-            if(numberOfLines <= 0)
-            {
+            if (numberOfLines <= 0) {
                 throw new NumberFormatException();
             }
-        }
-        catch(NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.setContentType("text/html");
             PrintWriter out = response.getWriter();
@@ -36,7 +30,7 @@ public class DownloadServlet extends HttpServlet
             out.println("</head>");
             out.println("<body>");
             out.println("<h3>Der eingegebene Text '" + linesString +
-                        "' ist keine positive ganze Zahl.</h3>");
+                    "' ist keine positive ganze Zahl.</h3>");
             out.println("</body>");
             out.println("</html>");
             return;
@@ -44,10 +38,9 @@ public class DownloadServlet extends HttpServlet
 
         response.setContentType("text/plain");
         response.setHeader("Content-Disposition",
-                           "attachment; filename=\"lines.txt\"");
+                "attachment; filename=\"lines.txt\"");
         PrintWriter out = response.getWriter();
-        for(int i = 1; i <= numberOfLines; i++)
-        {
+        for (int i = 1; i <= numberOfLines; i++) {
             out.println("Zeile " + i);
         }
     }

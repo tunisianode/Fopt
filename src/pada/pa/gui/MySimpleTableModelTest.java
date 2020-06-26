@@ -3,36 +3,30 @@ package pada.pa.gui;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 
-@SuppressWarnings("serial") 
-class MySimpleTableModel extends AbstractTableModel
-{
+@SuppressWarnings("serial")
+class MySimpleTableModel extends AbstractTableModel {
     private int rowCount;
     private int columnCount;
 
-    public MySimpleTableModel(int rows, int columns)
-    {
+    public MySimpleTableModel(int rows, int columns) {
         rowCount = rows;
         columnCount = columns;
     }
 
-    public int getRowCount()
-    {
+    public int getRowCount() {
         return rowCount;
     }
 
-    public int getColumnCount()
-    {
+    public int getColumnCount() {
         return columnCount;
     }
 
-    public String getColumnName(int column)
-    {
+    public String getColumnName(int column) {
         column++;
         return column + "er";
     }
 
-    public Object getValueAt(int row, int column)
-    {
+    public Object getValueAt(int row, int column) {
         row++;
         column++;
         int result = row * column;
@@ -40,10 +34,8 @@ class MySimpleTableModel extends AbstractTableModel
     }
 }
 
-public class MySimpleTableModelTest
-{
-    public static void main(String args[])
-    {
+public class MySimpleTableModelTest {
+    public static void main(String args[]) {
         JFrame f = new JFrame("Einmaleins");
         f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         MySimpleTableModel model = new MySimpleTableModel(10, 10);

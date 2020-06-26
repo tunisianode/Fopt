@@ -2,60 +2,50 @@ package pada.pa.basic;
 
 import java.util.HashMap;
 
-class CommonAndThreadLocalData
-{
+class CommonAndThreadLocalData {
     private int common;
     //private ThreadLocal<Integer> local;
     private MyThreadLocal<Integer> local;
-    
-    public CommonAndThreadLocalData()
-    {
+
+    public CommonAndThreadLocalData() {
         common = 0;
         //local = new ThreadLocal<Integer>();
         local = new MyThreadLocal<Integer>();
     }
-    
-    public synchronized void next()
-    {
+
+    public synchronized void next() {
         common++;
         Integer integer = local.get();
-        if(integer == null)
-        {
+        if (integer == null) {
             integer = new Integer(0);
         }
         int localData = integer.intValue() + 1;
         local.set(new Integer(localData));
         System.out.println(Thread.currentThread().getName()
-                           + ": common = " + common
-                           + ", local = " + localData);
+                + ": common = " + common
+                + ", local = " + localData);
     }
 }
 
-class CommonAndThreadLocalThread extends Thread
-{
+class CommonAndThreadLocalThread extends Thread {
     private CommonAndThreadLocalData data;
 
     public CommonAndThreadLocalThread(CommonAndThreadLocalData data,
-                                      String name)
-    {
+                                      String name) {
         super(name);
         this.data = data;
     }
 
-    public void run()
-    {
-        for(int i = 1; i <= 3; i++)
-        {
+    public void run() {
+        for (int i = 1; i <= 3; i++) {
             data.next();
-            yield();
+            //yield();
         }
     }
 }
 
-public class ThreadLocalDemo
-{
-    public static void main(String[] args)
-    {
+public class ThreadLocalDemo {
+    public static void main(String[] args) {
         CommonAndThreadLocalData data = new CommonAndThreadLocalData();
         CommonAndThreadLocalThread t1 = new CommonAndThreadLocalThread(data, "T1");
         CommonAndThreadLocalThread t2 = new CommonAndThreadLocalThread(data, "T2");
@@ -66,27 +56,22 @@ public class ThreadLocalDemo
     }
 }
 
-class MyThreadLocal<T>
-{
-    private HashMap<Thread,T> map;
-    
-    public MyThreadLocal()
-    {
-        map = new HashMap<Thread,T>();
+class MyThreadLocal<T> {
+    private HashMap<Thread, T> map;
+
+    public MyThreadLocal() {
+        map = new HashMap<Thread, T>();
     }
-    
-    public T get()
-    {
+
+    public T get() {
         return map.get(Thread.currentThread());
     }
-    
-    public void set(T value)
-    {
+
+    public void set(T value) {
         map.put(Thread.currentThread(), value);
     }
-    
-    public void remove()
-    {
+
+    public void remove() {
         map.remove(Thread.currentThread());
     }
 }
